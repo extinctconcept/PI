@@ -1,0 +1,5 @@
+*.out
+Assign4
+*.o
+core
+build/
