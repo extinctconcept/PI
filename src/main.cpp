@@ -18,7 +18,9 @@ void threadWorker(std::uint16_t threadNum, std::queue<int> &task, std::unordered
 
    // std::cout << "[" <<  threadNum << "] watch me compute digit #"
      //   << threadNum+1 << " of pi: "
-     pi.insert({0, computePiDigit(0)});
+     int digit = task.front();
+     task.pop();
+     pi.insert({digit, computePiDigit(digit)});
 }
 
 
@@ -28,12 +30,14 @@ int main() {
 	std::queue<int> task;
 	std::mutex pi_mutex;
 
-	for(int i = 1; i <= 1000; i++) {
+	// push all tasks onto queue
+	for(int i = 1; i < 1000; i++) {
 		task.push(i);
 	}
 
 	// Make as many threads as there are CPU cores
     	// Assign them to run our threadWorker function, and supply arguments as necessary for that function
+	while(!task.empty()) {
 	std::vector<std::shared_ptr<std::thread>> threads;
 	for (std::uint16_t core = 0; core < std::thread::hardware_concurrency(); core++) {
 	// The arguments you wish to pass to threadWorker are passed as
@@ -47,21 +51,20 @@ int main() {
 
 	//
 	// Wait for all of these threads to complete
-
 	for (auto&& thread : threads)
 		thread->join();
 
-	std::cout << std::endl << std::endl;
 
-#warning TODO: Print the digits of PI from our unordered_map, in order
-	//for(int i = 0; i <= 1000; i++) {
-	//	std::unordered_map<int,int>::const_iterator got = pi.find(1);
-	//	std::cout << got->second; 
-	//}
-	
-	//std::cout << got->first << std::endl;
-	for (auto& p: pi) {
-		std::cout << p.second << std::endl;
 	}
+	
+	// print digits of pi in order
+	std::cout << std::endl << std::endl;
+	std::cout << 3 << ".";
+	for(int i = 1; i < 1000; i++) {
+		std::unordered_map<int,int>::const_iterator got = pi.find(i);
+		std::cout << got->second; 
+		std::cout.flush();
+	}
+	std::cout << std::endl;
 	return 0;
 }
