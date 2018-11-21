@@ -201,7 +201,7 @@ unsigned long long s(unsigned long long j, unsigned long long n) {
 unsigned long long piDigitHex(unsigned long long n) {
 	const unsigned long long D = 14;
 	const unsigned long long M = static_cast<unsigned long long>(std::pow(16, D));
-	const unsigned long long SHIFT = 4 * D;
+	const unsigned long long __attribute__((unused))SHIFT = 4 * D;
 	const unsigned long long MASK = M - 1;
 
 	n -= 1;

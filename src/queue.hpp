@@ -11,10 +11,13 @@ class MyQueue {
 			mtx.unlock();
 		}
 
-		void pop() {
+		int pop() {
+			int i = -1;
 			mtx.lock();
+			i = q.front();
 			q.pop();
 			mtx.unlock();
+			return i;
 		}
 
 		bool empty() {
